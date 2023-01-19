@@ -7,14 +7,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = require("../db/database");
+const productRoute = require("../router/product.route");
 
-db.execute("SELECT * FROM products")
-  .then((result) => {
-    console.log(result[0]);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+app.use("/api/v1", productRoute);
 
 module.exports = app;
