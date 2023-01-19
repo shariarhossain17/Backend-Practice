@@ -1,4 +1,4 @@
-const { fetchProductServices } = require("../services/product.services");
+const { fetchProductServices, postProductService } = require("../services/product.services");
 
 module.exports.fetchProducts = async (req, res) => {
   try {
@@ -17,3 +17,24 @@ module.exports.fetchProducts = async (req, res) => {
     });
   }
 };
+
+
+
+module.exports.postProduct = async (req,res,next) => {
+    try {
+        const data = req.body;
+        const result = await postProductService(data);
+
+        res.status(200).json({
+            status:true,
+            message:"post success",
+            data:result
+        })
+    } catch (error) {
+        res.status(400).json({
+            status:false,
+            message:"can't create data",
+            error:error
+        })
+    }
+}
