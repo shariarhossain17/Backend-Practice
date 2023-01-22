@@ -16,5 +16,4 @@ exports.postProductService = async (data) => {
       console.log(err);
     });
 
-  console.log(product);
 };

@@ -10,7 +10,7 @@ class Product {
 
   save() {
     return db.execute(
-      "INSERT INTO products {title,price,description} VALUES (?, ?, ?)",
+      "INSERT INTO products (title, price, description) VALUES (? , ? , ?)",
       [this.title, this.price, this.description]
     );
   }
