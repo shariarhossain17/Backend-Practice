@@ -18,6 +18,10 @@ class Product {
   static fetchAll() {
     return db.execute("SELECT * FROM products");
   }
+
+  static fetchById(id) {
+    return db.execute("SELECT * FROM products where products.id = ?", [id]);
+  }
 }
 
 module.exports = Product;

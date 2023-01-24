@@ -10,10 +10,14 @@ exports.postProductService = async (data) => {
   product
     .save()
     .then((result) => {
-      console.log(result);
+      return result;
     })
     .catch((err) => {
-      console.log(err);
+      return err;
     });
+};
 
+exports.fetchProductServicesById = async (id) => {
+  const result = Product.fetchById(id);
+  return result;
 };
