@@ -19,7 +19,10 @@ exports.postProductService = async (data) => {
   return result;
 };
 
-exports.fetchProductServicesById = async (id) => {
-  const result = Product.fetchById(id);
+exports.fetchProductServicesById = async (productId) => {
+
+  const result = Product.findAll({where:{id:productId}}).then((product) => {
+    return product;
+  });
   return result;
 };
