@@ -31,7 +31,6 @@ module.exports.postProduct = async (req, res, next) => {
   try {
     const data = req.body;
     const result = await postProductService(data);
-
     res.status(200).json({
       status: true,
       message: "post success",

@@ -1,4 +1,4 @@
-const Product = require("../db/db");
+const Product = require("../models/product.model");
 
 exports.fetchProductServices = async () => {
   const result = Product.fetchAll();
@@ -6,15 +6,17 @@ exports.fetchProductServices = async () => {
 };
 
 exports.postProductService = async (data) => {
-  const product = new Product(null, data.title, data.price, data.description);
-  product
-    .save()
-    .then((result) => {
-      return result;
-    })
-    .catch((err) => {
-      return err;
-    });
+
+  console.log(data);
+
+  const {title,price,description} = data;
+  const result = await Product.create({
+    title:title,
+    price:price,
+    description:description
+  })
+
+  return result;
 };
 
 exports.fetchProductServicesById = async (id) => {
