@@ -1,20 +1,20 @@
 const Product = require("../models/product.model");
 
 exports.fetchProductServices = async () => {
-  const result = Product.fetchAll();
+  const result = Product.findAll().then(data => {
+   return data
+  });
+
   return result;
 };
 
 exports.postProductService = async (data) => {
-
-  console.log(data);
-
-  const {title,price,description} = data;
+  const { title, price, description } = data;
   const result = await Product.create({
-    title:title,
-    price:price,
-    description:description
-  })
+    title: title,
+    price: price,
+    description: description,
+  });
 
   return result;
 };

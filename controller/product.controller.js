@@ -7,7 +7,7 @@ const {
 module.exports.fetchProducts = async (req, res) => {
   try {
     const product = await fetchProductServices();
-    if(product[0].length === 0){
+    if(product.length === 0){
       res.status(400).json({
         status:false,
         message:"can't find data"
@@ -16,7 +16,7 @@ module.exports.fetchProducts = async (req, res) => {
     res.status(200).json({
       status: true,
       message: "data get success",
-      data: product[0],
+      data: product,
     });
   } catch (error) {
     res.status(400).json({
