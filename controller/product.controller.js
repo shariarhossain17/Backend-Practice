@@ -3,6 +3,7 @@ const {
   postProductService,
   fetchProductServicesById,
   updateProductByIdService,
+  deleteProductById,
 } = require("../services/product.services");
 
 module.exports.fetchProducts = async (req, res) => {
@@ -78,3 +79,21 @@ module.exports.updatedProduct = async (req, res, next) => {
     });
   }
 };
+
+
+module.exports.deletedProduct = async (req,res,next) => {
+  try {
+    const result = await deleteProductById(req.params.id);
+
+    res.status(200).json({
+      status:true,
+      message:"product deleted success",
+      data:result
+    })
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+      message: "can't deleted data",
+    });
+  }
+}

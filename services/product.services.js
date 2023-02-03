@@ -40,11 +40,24 @@ exports.updateProductByIdService = async (id, product) => {
       return product.save();
     })
     .then((result) => {
-      // console.log(result);
+      return result;
     })
     .catch((err) => {
       return err;
     });
 
   return result;
+};
+
+exports.deleteProductById = async (id) => {
+  const result = await Product.findByPk(id)
+    .then((product) => {
+      return product.destroy();
+    })
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      return err;
+    });
 };
