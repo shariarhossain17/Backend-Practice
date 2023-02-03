@@ -2,6 +2,7 @@ const {
   fetchProductServices,
   postProductService,
   fetchProductServicesById,
+  updateProductByIdService,
 } = require("../services/product.services");
 
 module.exports.fetchProducts = async (req, res) => {
@@ -58,6 +59,22 @@ module.exports.fetchProductById = async (req, res, next) => {
       status: false,
       message: "can't create data",
       error: error,
+    });
+  }
+};
+
+module.exports.updatedProduct = async (req, res, next) => {
+  try {
+    const result = await updateProductByIdService(req.params.id, req.body);
+
+    res.status(200).json({
+      status: true,
+      message: "product updated success",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+      message: "can't updated data",
     });
   }
 };
