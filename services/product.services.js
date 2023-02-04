@@ -1,3 +1,4 @@
+
 const Product = require("../models/product.model");
 
 exports.fetchProductServices = async () => {
@@ -8,12 +9,13 @@ exports.fetchProductServices = async () => {
   return result;
 };
 
-exports.postProductService = async (data) => {
+exports.postProductService = async (data,user) => {
   const { title, price, description } = data;
   const result = await Product.create({
     title: title,
     price: price,
     description: description,
+    userId:user.id
   });
 
   return result;
@@ -33,7 +35,6 @@ exports.updateProductByIdService = async (id, product) => {
 
   const result = Product.findByPk(id)
     .then((product) => {
-      console.log(product);
       (product.title = title),
         (product.price = price),
         (product.description = description);

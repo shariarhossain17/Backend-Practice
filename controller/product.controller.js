@@ -32,7 +32,7 @@ module.exports.fetchProducts = async (req, res) => {
 module.exports.postProduct = async (req, res, next) => {
   try {
     const data = req.body;
-    const result = await postProductService(data);
+    const result = await postProductService(data,req.user);
     res.status(200).json({
       status: true,
       message: "post success",
