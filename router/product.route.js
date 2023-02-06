@@ -4,13 +4,13 @@ const productController = require("../controller/product.controller");
 
 router
   .route("/products")
-  .get(productController.fetchProducts)
-  .post(productController.postProduct);
+  .post(productController.postProduct)
+  .get(productController.fetchAllProduct);
 
 router
   .route("/products/:id")
   .get(productController.fetchProductById)
   .patch(productController.updatedProduct)
-  .delete(productController.deletedProduct)
+  .delete(productController.deleteProduct)
 
 module.exports = router;

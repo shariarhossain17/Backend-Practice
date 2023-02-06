@@ -1,47 +1,38 @@
 const {
-  fetchProductServices,
   postProductService,
+  fetchProductServices,
   fetchProductServicesById,
   updateProductByIdService,
   deleteProductById,
 } = require("../services/product.services");
 
-module.exports.fetchProducts = async (req, res) => {
+module.exports.postProduct = async (req, res, next) => {
   try {
-    const product = await fetchProductServices();
-    if (product.length === 0) {
-      res.status(400).json({
-        status: false,
-        message: "can't find data",
-      });
-    }
+    const result = await postProductService(req.body);
     res.status(200).json({
       status: true,
-      message: "data get success",
-      data: product,
+      message: "data create success",
     });
   } catch (error) {
     res.status(400).json({
       status: false,
-      message: "can't get products data",
+      message: "can't crete data",
       error: error,
     });
   }
 };
-
-module.exports.postProduct = async (req, res, next) => {
+module.exports.fetchAllProduct = async (req, res, next) => {
   try {
-    const data = req.body;
-    const result = await postProductService(data,req.user);
+    const result = await fetchProductServices();
     res.status(200).json({
       status: true,
-      message: "post success",
+      message: "data get success",
       data: result,
     });
   } catch (error) {
     res.status(400).json({
       status: false,
-      message: "can't create data",
+      message: "can't get data",
       error: error,
     });
   }
@@ -49,51 +40,48 @@ module.exports.postProduct = async (req, res, next) => {
 module.exports.fetchProductById = async (req, res, next) => {
   try {
     const result = await fetchProductServicesById(req.params.id);
-
     res.status(200).json({
       status: true,
       message: "data get success",
-      data: result[0],
+      data: result,
     });
   } catch (error) {
     res.status(400).json({
       status: false,
-      message: "can't create data",
+      message: "can't get data",
       error: error,
     });
   }
 };
-
 module.exports.updatedProduct = async (req, res, next) => {
   try {
     const result = await updateProductByIdService(req.params.id, req.body);
-
     res.status(200).json({
       status: true,
-      message: "product updated success",
+      message: "data updated success",
+      data: result,
     });
   } catch (error) {
     res.status(400).json({
       status: false,
       message: "can't updated data",
+      error: error,
     });
   }
 };
-
-
-module.exports.deletedProduct = async (req,res,next) => {
+module.exports.deleteProduct = async (req, res, next) => {
   try {
     const result = await deleteProductById(req.params.id);
-
     res.status(200).json({
-      status:true,
-      message:"product deleted success",
-      data:result
-    })
+      status: true,
+      message: "data deleted success",
+      data: result,
+    });
   } catch (error) {
     res.status(400).json({
       status: false,
       message: "can't deleted data",
+      error: error,
     });
   }
-}
+};

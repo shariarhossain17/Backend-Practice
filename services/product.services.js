@@ -1,64 +1,32 @@
-
 const Product = require("../models/product.model");
 
 exports.fetchProductServices = async () => {
-  const result = Product.findAll().then((data) => {
-    return data;
-  });
+  const result = await Product.find({});
 
   return result;
 };
 
-exports.postProductService = async (data,user) => {
-  const { title, price, description } = data;
-  const result = await Product.create({
-    title: title,
-    price: price,
-    description: description,
-    userId:user.id
-  });
+exports.postProductService = async (data) => {
+  console.log(data);
+  const result = await Product.create(data);
 
   return result;
 };
 
 exports.fetchProductServicesById = async (productId) => {
-  const result = Product.findAll({ where: { id: productId } }).then(
-    (product) => {
-      return product;
-    }
-  );
+  console.log(productId);
+  const result = await Product.findById(productId);
   return result;
 };
 
 exports.updateProductByIdService = async (id, product) => {
-  const { title, price, description } = product;
-
-  const result = Product.findByPk(id)
-    .then((product) => {
-      (product.title = title),
-        (product.price = price),
-        (product.description = description);
-      return product.save();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((err) => {
-      return err;
-    });
-
+  const result = await Product.updateOne({ _id: id }, product, {
+    runValidators: true,
+  });
   return result;
 };
 
 exports.deleteProductById = async (id) => {
-  const result = await Product.findByPk(id)
-    .then((product) => {
-      return product.destroy();
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((err) => {
-      return err;
-    });
+  const result = await Product.findByIdAndDelete(id);
+  return result;
 };
