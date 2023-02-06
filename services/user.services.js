@@ -10,3 +10,8 @@ exports.getUserServiceByEmail = async (email) => {
     const user = await User.findOne({email});
     return user;
 }
+
+exports.getCartService = async (id) => {
+    const result = await User.findById(id).populate("cart.items.productId")
+    return result;
+}

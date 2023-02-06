@@ -41,8 +41,6 @@ userSchema.methods.addToCart = async function (product) {
 
   let newQuantity = 1;
   const updatedCartItems = await [...this.cart.items];
-
-  console.log(typeof parseInt(this.cart.items[cartProductIndex].quantity));
   if (cartProductIndex >= 0) {
     newQuantity =
       (await parseInt(this.cart.items[cartProductIndex].quantity)) +

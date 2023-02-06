@@ -1,5 +1,5 @@
 const { fetchProductServicesById } = require("../services/product.services");
-const { createUserService, getUserServiceByEmail } = require("../services/user.services");
+const { createUserService, getUserServiceByEmail, getCartService } = require("../services/user.services");
 
 module.exports.createUser = async (req, res, next) => {
   try {
@@ -23,7 +23,6 @@ module.exports.postCart = async (req,res,next) => {
   try {
     const product = await fetchProductServicesById(req.body.productId)
     const user = await getUserServiceByEmail(req.body.email)
-    console.log(user)
 
     const cart = await user.addToCart(product);
     
@@ -42,3 +41,23 @@ module.exports.postCart = async (req,res,next) => {
     });
   }
 };
+
+
+module.exports.getCart = async (req,res,next) => {
+    try{
+        const cart = await getCartService(req.body.id)
+
+        res.status(200).json({
+            status:true,
+            message:"cart get success",
+            cart:cart
+        })
+    }
+    catch(error) {
+        res.status(400).json({
+            status: false,
+            message: "can't find cart",
+            error: error,
+          });
+    }
+}

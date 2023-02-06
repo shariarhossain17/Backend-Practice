@@ -14,7 +14,6 @@ exports.postProductService = async (data) => {
 };
 
 exports.fetchProductServicesById = async (productId) => {
-  console.log(productId);
   const result = await Product.findById(productId);
   return result;
 };
