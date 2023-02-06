@@ -1,13 +1,13 @@
 const Product = require("../models/product.model");
 
 exports.fetchProductServices = async () => {
-  const result = await Product.find({});
+  const result = await Product.find({}).populate("userId");
 
   return result;
 };
 
 exports.postProductService = async (data) => {
-  console.log(data);
+
   const result = await Product.create(data);
 
   return result;
