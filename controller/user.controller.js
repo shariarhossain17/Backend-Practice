@@ -8,13 +8,11 @@ const {
 module.exports.createUser = async (req, res, next) => {
   try {
     const result = await createUserService(req.body);
-    console.log(req.session)
-    req.session.isLogged = true
+    req.session.isLogged = true;
     res.status(200).json({
       status: true,
       message: {
         data: result,
-        token: "dfjerueir4o450itor90",
       },
     });
   } catch (error) {
@@ -82,6 +80,52 @@ module.exports.removeCart = async (req, res, next) => {
     res.status(400).json({
       status: false,
       message: "cant't remove cart",
+      error: error,
+    });
+  }
+};
+
+module.exports.signIn = async (req, res, next) => {
+  try {
+
+    console.log(req.session);
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(401).json({
+        status: false,
+        message: "please provide your email and passwords",
+      });
+    }
+
+    const user = await getUserServiceByEmail(email);
+    if (!user) {
+      return res.status(403).json({
+        status: false,
+        message: "please crate account",
+      });
+    }
+
+    const isPasswordValid = await user.comparePassword(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        status: false,
+        message: "password incorrect",
+      });
+    }
+
+    req.session.isLogged = true;
+
+    const { password: pwd, ...others } = user.toObject();
+    res.status(200).json({
+      status: true,
+      message: "login success",
+      data: others,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+      message: "something went wrong ",
       error: error,
     });
   }

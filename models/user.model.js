@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs")
 
 const { ObjectId } = mongoose.Schema.Types;
 
@@ -11,6 +12,10 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  password:{
+    type:String,
+    require:true,
   },
   role: {
     type: String,
@@ -34,6 +39,27 @@ const userSchema = mongoose.Schema({
   },
 });
 
+
+userSchema.pre("save", function (next) {
+  if (!this.isModified("password")) {
+
+    return next();
+  }
+  const password = this.password;
+
+  const hashedPassword = bcrypt.hashSync(password);
+
+  this.password = hashedPassword;
+
+  next();
+});
+
+
+
+userSchema.methods.comparePassword = async function(pass,hash){
+  const isPasswordValid = await bcrypt.compare(pass,hash);
+  return isPasswordValid;
+}
 userSchema.methods.addToCart = async function (product) {
   const cartProductIndex = await this.cart.items.findIndex((cp) => {
     return cp.productId.toString() === product._id.toString();
@@ -61,16 +87,17 @@ userSchema.methods.addToCart = async function (product) {
   return this.save();
 };
 
-userSchema.methods.removeCart = async function(productId) {
-
-  console.log(productId)
+userSchema.methods.removeCart = async function (productId) {
   const updateCart = this.cart.items.filter((p) => {
-    return p.productId.toString() !== productId.toString()
-  })
+    return p.productId.toString() !== productId.toString();
+  });
 
-  this.cart= updateCart;
-  this.save()
+  this.cart = updateCart;
+  this.save();
 };
+
+
+
 
 const User = mongoose.model("User", userSchema);
 

@@ -1,13 +1,13 @@
 const router = require("express").Router();
 
 const productController = require("../controller/product.controller");
-const isLoggedIn = require("../middleware/isLoggedIn");
-const verifyLogin = require("../middleware/verifyLogin");
+const isAuth = require("../middleware/isAuth");
+
 
 router
   .route("/products")
   .post(productController.postProduct)
-  .get(productController.fetchAllProduct);
+  .get(isAuth,productController.fetchAllProduct);
 
 router
   .route("/products/:id")
