@@ -87,7 +87,6 @@ module.exports.removeCart = async (req, res, next) => {
 
 module.exports.signIn = async (req, res, next) => {
   try {
-
     console.log(req.session);
     const { email, password } = req.body;
     if (!email || !password) {
@@ -117,10 +116,14 @@ module.exports.signIn = async (req, res, next) => {
     req.session.isLogged = true;
 
     const { password: pwd, ...others } = user.toObject();
+
+    
     res.status(200).json({
       status: true,
       message: "login success",
-      data: others,
+      data: {
+        others,
+      },
     });
   } catch (error) {
     res.status(400).json({

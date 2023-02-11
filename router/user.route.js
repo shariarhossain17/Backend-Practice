@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const userController = require("../controller/user.controller");
-
+const authenticate = require("../middleware/authenticate");
 router
   .route("/cart")
   .post(userController.postCart)

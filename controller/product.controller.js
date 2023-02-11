@@ -24,7 +24,6 @@ module.exports.postProduct = async (req, res, next) => {
 module.exports.fetchAllProduct = async (req, res, next) => {
   try {
     const result = await fetchProductServices();
-    res.cookie('cookieName', 'cookieValue');
     res.status(200).json({
       status: true,
       message: "data get success",
