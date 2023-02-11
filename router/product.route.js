@@ -1,6 +1,8 @@
 const router = require("express").Router();
 
 const productController = require("../controller/product.controller");
+const isLoggedIn = require("../middleware/isLoggedIn");
+const verifyLogin = require("../middleware/verifyLogin");
 
 router
   .route("/products")

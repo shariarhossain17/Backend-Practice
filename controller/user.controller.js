@@ -8,9 +8,14 @@ const {
 module.exports.createUser = async (req, res, next) => {
   try {
     const result = await createUserService(req.body);
+    console.log(req.session)
+    req.session.isLogged = true
     res.status(200).json({
       status: true,
-      message: "user create success",
+      message: {
+        data: result,
+        token: "dfjerueir4o450itor90",
+      },
     });
   } catch (error) {
     res.status(400).json({
