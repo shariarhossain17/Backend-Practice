@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
 
 const { ObjectId } = mongoose.Schema.Types;
 
@@ -13,15 +13,17 @@ const userSchema = mongoose.Schema({
     required: true,
     unique: true,
   },
-  password:{
-    type:String,
-    require:true,
+  password: {
+    type: String,
+    require: true,
   },
   role: {
     type: String,
     enum: ["user", "admin"],
     default: "user",
   },
+  token: String,
+  tokenExpires: Date,
   cart: {
     items: [
       {
@@ -39,10 +41,8 @@ const userSchema = mongoose.Schema({
   },
 });
 
-
 userSchema.pre("save", function (next) {
   if (!this.isModified("password")) {
-
     return next();
   }
   const password = this.password;
@@ -54,12 +54,10 @@ userSchema.pre("save", function (next) {
   next();
 });
 
-
-
-userSchema.methods.comparePassword = async function(pass,hash){
-  const isPasswordValid = await bcrypt.compare(pass,hash);
+userSchema.methods.comparePassword = async function (pass, hash) {
+  const isPasswordValid = await bcrypt.compare(pass, hash);
   return isPasswordValid;
-}
+};
 userSchema.methods.addToCart = async function (product) {
   const cartProductIndex = await this.cart.items.findIndex((cp) => {
     return cp.productId.toString() === product._id.toString();
@@ -95,9 +93,6 @@ userSchema.methods.removeCart = async function (productId) {
   this.cart = updateCart;
   this.save();
 };
-
-
-
 
 const User = mongoose.model("User", userSchema);
 

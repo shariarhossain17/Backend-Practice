@@ -3,7 +3,11 @@ const {
   createUserService,
   getUserServiceByEmail,
   getCartService,
+  resetService,
 } = require("../services/user.services");
+
+const crypto = require("crypto");
+const { sendMail } = require("../utils/sendMail");
 
 module.exports.createUser = async (req, res, next) => {
   try {
@@ -117,7 +121,6 @@ module.exports.signIn = async (req, res, next) => {
 
     const { password: pwd, ...others } = user.toObject();
 
-    
     res.status(200).json({
       status: true,
       message: "login success",
@@ -129,6 +132,40 @@ module.exports.signIn = async (req, res, next) => {
     res.status(400).json({
       status: false,
       message: "something went wrong ",
+      error: error,
+    });
+  }
+};
+
+module.exports.postReset = async (req, res, next) => {
+  try {
+    const user = await getUserServiceByEmail(req.body.email);
+
+    if (!user) {
+      res.status(401).json({
+        status: false,
+        message: "you have no account",
+      });
+    }
+    const token = crypto.randomBytes(6).toString("hex");
+    const tokenExpires = Date.now() + 3600;
+    const result = await resetService(user.email, {
+      token: token,
+      tokenExpires: tokenExpires,
+    });
+
+    if (result) {
+      await sendMail(user,token);
+    }
+
+    res.status(200).json({
+      status: true,
+      message: "code send your email",
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+      message: "something went wrong",
       error: error,
     });
   }

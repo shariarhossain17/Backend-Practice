@@ -8,5 +8,6 @@ router
   .delete(userController.removeCart);
 router.route("/signUp").post(userController.createUser);
 router.route("/signIn").post(userController.signIn);
+router.route("/reset").post(userController.postReset);
 
 module.exports = router;
