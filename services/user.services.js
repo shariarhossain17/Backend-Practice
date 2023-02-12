@@ -1,8 +1,10 @@
 
-const User = require("../models/user.model")
+const User = require("../models/user.model");
+const { sendMail } = require("../utils/sendMail");
 
 exports.createUserService = async (userData) => {
     const user = await User.create(userData);
+    await sendMail()
     return user 
 }
 
