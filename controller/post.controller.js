@@ -10,29 +10,34 @@ const { validationResult } = require("express-validator");
 module.exports.createPost = async (req, res, next) => {
   try {
     const error = validationResult(req);
-    // if (!error.isEmpty()) {
-    //   return res.status(422).json({
-    //     status: false,
-    //     message: "validation failed ,eneterd data is incorrect",
-    //     error:error.array()
-    //   });
-    // }
+    if (!error.isEmpty()) {
+      return res.status(422).json({
+        status: false,
+        message: "validation failed ,eneterd data is incorrect",
+        error: error.array(),
+      });
+    }
+
     const result = await createPostService(req.body);
     res.status(201).json({
       status: true,
       message: "post create success",
     });
   } catch (error) {
-    if(!error.statusCode){
-        error.statusCode = 500;
-        error.message = "can't create data"
+    if (!error.statusCode) {
+      error.statusCode = 500;
+      error.message = "can't create data";
     }
-    next(error)
+    next(error);
   }
 };
 module.exports.getPost = async (req, res, next) => {
   try {
-    const result = await getPostService();
+    const data = {
+      currentPage: req.query.page,
+      perPage: req.query.perPage,
+    };
+    const result = await getPostService(data);
     res.status(200).json({
       status: true,
       message: "post get success",

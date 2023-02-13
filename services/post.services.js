@@ -6,8 +6,9 @@ exports.createPostService = async (data) => {
     return post;
 }
 
-exports.getPostService = async () => {
-    const result = await Post.find({});
+exports.getPostService = async ({currentPage,perPage}) => {
+    console.log(currentPage,perPage);
+    const result = await Post.find({}).skip((currentPage - 1) * perPage).limit(perPage);
     return result
 }
 
