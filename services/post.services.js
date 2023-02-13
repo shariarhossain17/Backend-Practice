@@ -23,6 +23,6 @@ exports.updatePostServiceById = async (id,data) => {
 }
 
 exports.deletePostServiceById = async (id) => {
-    const result = await Post.deleteOne({id});
+    const result = await Post.deleteOne({_id:id});
     return result
 }
