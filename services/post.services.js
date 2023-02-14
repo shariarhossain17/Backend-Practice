@@ -14,7 +14,7 @@ exports.getPostService = async ({currentPage,perPage}) => {
 
 
 exports.getPostServiceById = async (id) => {
-    const post = await Post.findById(id);
+    const post = await Post.findById(id).populate("author");
     return post
 }
 

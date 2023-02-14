@@ -11,8 +11,9 @@ const postSchema = mongoose.Schema(
       required: true,
     },
     author: {
-      type: String,
-      required: [true, "please provide autor name"],
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"User",
+      required:true
     },
   },
   {

@@ -4,12 +4,12 @@ const authorization = require("../middleware/authorization");
 const verifyToken = require("../middleware/verifyToken");
 const { postValidate } = require("../utils/validator/postValidator");
 
-router.post("/create",postValidate(), postController.createPost);
+router.post("/create",postValidate(),verifyToken,authorization("user"), postController.createPost);
 router.get("/get", verifyToken,authorization("user"),postController.getPost);
 
 router
   .route("/:id")
-  .get(postController.getPostById)
+  .get(verifyToken,authorization("user"),postController.getPostById)
   .patch(postController.updatePostById)
   .delete(postController.deletePostById)
 
