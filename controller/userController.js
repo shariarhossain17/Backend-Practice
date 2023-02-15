@@ -39,7 +39,6 @@ module.exports.createUser = async (req, res, next) => {
 module.exports.logInUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
     if (!email || !password) {
       const error = new Error("please provide credential");
       error.statusCode = 400;
