@@ -1,4 +1,6 @@
+const verifyToken = require("../middleware/verifyToken");
 const User = require("../models/user.model");
+const { createPostService, getPostServiceById } = require("../services/post.services");
 const {
   findUserByEmailService,
   createUserService,
@@ -27,7 +29,6 @@ module.exports = {
   },
 
   logIn: async function ({ email, password }) {
-
     console.log(email);
 
     const user = await User.findOne({ email });
@@ -39,11 +40,7 @@ module.exports = {
     //   });
     // }
 
-  
-
-    
     const isPasswordValid = await user.comparePassword(password, user.password);
-
 
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -51,8 +48,32 @@ module.exports = {
         message: "can't find data",
       });
     }
-    const token = generateToken(user)
+    const token = generateToken(user);
 
-    return {token:token,user:user._id}
+    return { token: token, user: user._id };
   },
+
+  createPost: async function ({ postInput },context, req) {
+    const token = req?.headers?.authorization;
+
+    console.log(token);
+
+    
+    const post = await createPostService(postInput);
+    const { _id, title, content, author, updateAt, createAt } = post;
+    return {
+      _id: _id,
+      title: title,
+      content: content,
+      author: author,
+      updateAt: updateAt,
+      createAt: createAt,
+    };
+  },
+
+  post:async function ({id},req){
+    const post = await getPostServiceById(id)
+    const {title,content} = post
+    return {title,content}
+  }
 };
