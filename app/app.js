@@ -19,6 +19,8 @@ app.use((err, req, res, next) => {
   });
 });
 
+
+
 const postRoute = require("../router/post.route");
 const userRoute = require("../router/user.route")
 
